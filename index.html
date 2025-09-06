@@ -97,6 +97,10 @@
         const MIN_COUNT = 0;
         const appId = 'drink-sales-counter-2025';
 
+        // --- 初期表示を制御するフラグ ---
+        // 'day1' または 'day2' を指定してください。現在は要求どおり 'day2' に設定しています。
+        const INITIAL_DAY = 'day2';
+
 
         // --- DOM要素 ---
         const loaderContainer = document.getElementById('loader-container');
@@ -113,7 +117,8 @@
         let isInitialLoad = true;
         let listeners = [];
         let state = {
-            currentDay: 'day1',
+            // ここを INITIAL_DAY で初期化することでコード内フラグで制御可能にしています
+            currentDay: INITIAL_DAY,
             counts: { mitsuyaCider: 0, gingerAle: 0, grapeJuice: 0 }
         };
 
@@ -124,7 +129,8 @@
                 const app = initializeApp(firebaseConfig);
                 db = getDatabase(app);
                 setupEventListeners();
-                switchDay('day1'); 
+                // 初期表示はフラグに従って切り替え
+                switchDay(INITIAL_DAY); 
             } catch (error) {
                 console.error("Firebase Initialization Failed:", error);
                 loaderContainer.innerHTML = `<div class="text-center"><p class='text-red-500'>エラー: アプリケーションの読み込みに失敗しました。</p><p class='text-xs text-gray-400 mt-2'>${error.message}</p></div>`;
